@@ -1,0 +1,15 @@
+Lindbergh, Robert 100 55
+Smith, John 95 100
+Garcia, Michael M 94 57
+Williams, David 92 80
+Wien, Noel 90 88
+Hernandez, Paul T 88 50
+Garcia, David M 81 80
+Brown, David 80 75
+Yeager, David N 80 98
+Smith, Andrew 73 45
+Crossfield, Scott 66 35
+Smith, Peter 60 50
+Hoover, Robert 58 92
+Jones, Susan T 55 90
+Yeager, Michael S 48 100
