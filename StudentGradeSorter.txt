@@ -1,0 +1,120 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentsGradeSorter {
+
+
+    private static ArrayList<Student> readFile(String fileName) throws FileNotFoundException {
+        ArrayList<Student> sList = new ArrayList<>();
+        File file = new File(fileName);
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine(); //e.g. line = "David M Garcia 81 80"
+            String[] lineArray = line.split(" "); // lineArray = [ "David", "M", "Garcia", "81", "80"]
+            if (lineArray.length < 4) {
+                continue;
+            }
+            String firstName = lineArray[0];                          //lineArray[0]
+            String lastName;
+            int score1;
+            int score2;
+            String middleName = null;
+            if (lineArray.length == 4) { //no middle initial, e.g. John Smith 95 100
+                lastName = lineArray[1];
+                score1 = Integer.parseInt(lineArray[2]);
+                score2 = Integer.parseInt(lineArray[3]);
+
+            } else { //has a middle initial
+                middleName = lineArray[1];
+                lastName = lineArray[2];
+                score1 = Integer.parseInt(lineArray[3]);
+                score2 = Integer.parseInt(lineArray[4]);
+            }
+            //create a new student object
+            Student currStew = new Student();
+
+
+            //set student first name, last name, etc.
+            currStew.setFirstName(firstName);
+            currStew.setLastName(lastName);
+            if (middleName != null){
+                currStew.setMiddleInitial(middleName);
+            }
+            currStew.setScore1(score1);
+            currStew.setScore2(score2);
+
+            //save student to studentList
+            sList.add(currStew);
+
+
+        }
+        scanner.close();
+        return sList;
+    }
+
+    public static void studentSort(ArrayList<Student> arr){
+        for (int i = 0; i < arr.size() - 1; i++)
+        {
+            int index = i;
+            for (int j = i + 1; j < arr.size(); j++){
+                Student studentJ = arr.get(j);
+                Student studentIndex = arr.get(index);
+                if (studentJ.getScore1() > studentIndex.getScore1()) {
+                    index = j;//searching for lowest index
+                }
+            }
+            //int smallerNumber = arr[index];
+            Student largerStewScore = arr.get(index);
+
+            //arr[index] = arr[i];
+            arr.set(index, arr.get(i));
+
+            //arr[i] = smallerNumber;
+            arr.set(i, largerStewScore);
+        }
+    }
+
+    public  static  void writeFile(String filename, ArrayList<Student> list) {
+
+
+        try {
+            PrintWriter output = new PrintWriter(filename);
+
+            for(int i = 0; i < list.size(); i++ ){
+                Student stew = list.get(i);
+                output.print(stew.getLastName() + ", ");
+                output.print(stew.getFirstName() + " " );
+                if (stew.getMiddleInitial() != null) {
+                    output.print(stew.getMiddleInitial() + " ");
+                }
+                output.print(stew.getScore1());
+                output.print(" ");
+                output.print(stew.getScore2());
+                output.print("\n");
+            }
+
+            output.close();
+        }
+        catch(Exception e) {
+            e.getStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+
+
+
+        //Step 1: read file
+        ArrayList<Student> studentList = readFile("students.txt");
+
+        //Step 2: sort students
+        studentSort(studentList);
+
+        //Step 3: write sorted list to new file
+        writeFile("students_sorted.txt", studentList);
+
+    }
+}
